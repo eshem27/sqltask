@@ -1,0 +1,16 @@
+select transaction_id, 
+  transaction_datetime,
+  partner_id, country_id, 
+  purchase_sum, 
+  purchase_currency, 
+  id_transaction_status 
+from `currency_kurs.transactions` t
+inner join (
+  select partner_id as id, count(*) total_count
+  from `currency_kurs.transactions`t
+  where id_transaction_status = 3
+  group by id
+  order by total_count desc
+  limit 5
+) t2 
+on t.partner_id = t2.id;
