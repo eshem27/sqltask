@@ -1,0 +1,12 @@
+select partner_id, 
+  count(distinct transaction_id) as total_count,
+  round(avg(purchase_sum / kurs), 2) as avg_sum,
+  round(count(distinct if(id_transaction_status=3, transaction_id, null))/count(distinct transaction_id), 2) as Conv
+from `currency_kurs.transactions` t
+left join 
+  `currency_kurs.currency_kurs` kr
+  on t.purchase_currency = kr.id
+left join 
+   `currency_kurs.status` st
+   on t.id_transaction_status = st.id
+group by partner_id;
