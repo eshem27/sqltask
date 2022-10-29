@@ -1,0 +1,6 @@
+select t.*, row_number () over (
+partition by date(transaction_datetime) #берем конкретно даты 
+order by transaction_datetime asc #сортировка по возрастанию, берем первые транаа
+) as datetime 
+from   currency_kurs.transactions t
+qualify datetime &lt;=10;*
